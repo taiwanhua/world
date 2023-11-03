@@ -1,0 +1,21 @@
+{
+  "extends": "tsconfig/nextjs.json",
+  "compilerOptions": {
+    "paths": {
+      // https://github.com/vercel/turbo/discussions/620
+      "@/*": ["./src/*", "../../packages/ui/src/*"]
+    },
+    "strictNullChecks": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+      "target": "ESNext"
+      // "paths": {
+      //   "@/*": ["./src/*"]
+      // }
+    }
+  }
+}
