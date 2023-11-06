@@ -14,7 +14,8 @@
     "NEXTAUTH_URL",
     "NEXTAUTH_JWT_EXPIRE_TIME",
     "NEXTAUTH_SECRET",
-    "Arhua"
+    "Arhua",
+    "openai"
   ],
   // https://github.com/microsoft/vscode-eslint/issues/1620
   // "eslint.experimental.useFlatConfig": false,
