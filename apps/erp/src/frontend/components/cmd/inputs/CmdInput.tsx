@@ -3,6 +3,7 @@ import type {
   Dispatch,
   SetStateAction,
   KeyboardEventHandler,
+  CSSProperties,
 } from "react";
 import { forwardRef, memo, useCallback, useMemo } from "react";
 import Typography from "@mui/material/Typography";
@@ -61,7 +62,7 @@ const CmdInputForwardRef = forwardRef<HTMLInputElement, CmdInputProps>(
       [onEnterKeyDown, setInputValue],
     );
 
-    const inputStyle = useMemo(
+    const inputStyle = useMemo<CSSProperties>(
       () => ({
         border: "none",
         background: "transparent",

@@ -3,7 +3,7 @@ import { memo, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import Collapse from "@mui/material/Collapse";
 import { useSX, type SX } from "@/frontend/hooks/theme/useSX";
-import CmdInputHistory from "@/frontend/components/cmd/outputs/CmdInputHistory";
+import ChatInputHistory from "@/frontend/components/chat/outputs/ChatInputHistory";
 
 export interface ChatProps {
   sx?: SX;
@@ -35,7 +35,7 @@ const Chat: FC<PropsWithChildren<ChatProps>> = ({ sx }) => {
   return (
     <Collapse in={open} timeout={timeout}>
       <Card sx={cardSx} variant="outlined">
-        <CmdInputHistory initialCommand="about" />
+        <ChatInputHistory />
       </Card>
     </Collapse>
   );
