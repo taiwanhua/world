@@ -6,8 +6,6 @@ import type {
 } from "react";
 import { forwardRef, memo, useCallback } from "react";
 import Box from "@mui/material/Box";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import Stack from "@mui/material/Stack";
 import type { TextFieldProps } from "@mui/material/TextField";
 import TextField from "@mui/material/TextField";
 
@@ -27,7 +25,7 @@ const ChatInputForwardRef = forwardRef<HTMLInputElement, ChatInputProps>(
       inputValue = "",
       setInputValue = emptyFunction,
       onEnterKeyDown = emptyFunction,
-      disabled,
+      ...textFieldProps
     },
     ref,
   ) {
@@ -42,28 +40,25 @@ const ChatInputForwardRef = forwardRef<HTMLInputElement, ChatInputProps>(
       (event) => {
         if (event.key === "Enter") {
           onEnterKeyDown(event);
-          setInputValue("");
         }
       },
-      [onEnterKeyDown, setInputValue],
+      [onEnterKeyDown],
     );
 
     return (
       <Box>
-        <Stack direction="row" spacing={1}>
-          <ArrowForwardIosIcon color="success" fontSize="small" />
-          <TextField
-            disabled={disabled}
-            label="Multiline"
-            maxRows={4}
-            minRows={4}
-            multiline
-            onChange={onChange}
-            onKeyDown={onKeyDown}
-            ref={ref}
-            value={inputValue}
-          />
-        </Stack>
+        <TextField
+          fullWidth
+          label="Multiline"
+          maxRows={4}
+          minRows={4}
+          multiline
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+          ref={ref}
+          value={inputValue}
+          {...textFieldProps}
+        />
       </Box>
     );
   },
