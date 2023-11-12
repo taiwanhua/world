@@ -96,6 +96,7 @@ const CmdInputForwardRef = forwardRef<HTMLInputElement, CmdInputProps>(
           <input
             onChange={onChange}
             onKeyDown={onKeyDown}
+            placeholder="輸入 help 獲得幫助資訊..."
             readOnly={readonly}
             ref={ref}
             style={inputStyle}

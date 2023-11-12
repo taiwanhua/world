@@ -17,7 +17,7 @@ const Chat: FC<PropsWithChildren<ChatProps>> = ({ sx }) => {
   const cardSx = useSX(
     () => [
       {
-        height: "calc(60vh - 100px)",
+        height: "calc(70vh - 6.25rem)",
         overflow: "auto",
         borderColor: (theme) => theme.palette.grey[500],
       },

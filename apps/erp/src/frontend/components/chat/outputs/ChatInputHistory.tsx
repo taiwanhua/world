@@ -77,16 +77,14 @@ const ChatInputHistoryFC: FC<PropsWithChildren<ChatInputHistoryProps>> = ({
             const chunk = new TextDecoder("utf-8").decode(value);
 
             writingChatInput(chunk);
-            boxRef.current?.scrollTo(0, boxRef.current.scrollHeight);
+            boxRef.current?.scrollTo({
+              top: boxRef.current.scrollHeight,
+              behavior: "smooth",
+            });
           }
 
           setInputValue("");
           setIsGenerating(false);
-          // boxRef.current?.scrollIntoView({
-          //   behavior: "smooth",
-          //   block: "end",
-          //   inline: "end",
-          // });
         }
       })
       // eslint-disable-next-line no-console
@@ -159,7 +157,7 @@ const ChatInputHistoryFC: FC<PropsWithChildren<ChatInputHistoryProps>> = ({
       <Box sx={inputBoxSx}>
         <ChatInput
           disabled={isGenerating}
-          error={inputValue.length > 300}
+          error={inputValue.length > maxQuestionLength}
           helperText={`每個問題最多 ${inputValue.length} / ${maxQuestionLength}字`}
           inputValue={inputValue}
           onEnterKeyDown={onEnterKeyDown}

@@ -1,5 +1,12 @@
 import type { FC, KeyboardEventHandler, PropsWithChildren } from "react";
-import { memo, useEffect, useRef, useState, useCallback } from "react";
+import {
+  memo,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  Fragment,
+} from "react";
 import Box from "@mui/material/Box";
 import { useSX, type SX } from "@/frontend/hooks/theme/useSX";
 import type { CmdInputHistory } from "@/frontend/hooks/zustand/useCmdInputHistoryStore";
@@ -55,9 +62,9 @@ const CmdInputHistoryFC: FC<PropsWithChildren<CmdInputHistoryProps>> = ({
       return;
     }
 
-    boxRef.current?.scrollIntoView({
+    boxRef.current?.scrollTo({
+      top: boxRef.current.scrollHeight,
       behavior: "smooth",
-      block: "end",
     });
   }, [cmdInputHistory]);
 
@@ -67,15 +74,18 @@ const CmdInputHistoryFC: FC<PropsWithChildren<CmdInputHistoryProps>> = ({
     pushCmdInput(inputValue);
   }, [inputValue, pushCmdInput]);
 
-  const boxSx = useSX(() => [{ paddingBottom: 2 }, sx], [sx]);
+  const boxSx = useSX(
+    () => [{ overflow: "auto", height: "100%", paddingBottom: 2 }, sx],
+    [sx],
+  );
 
   return (
     <Box ref={boxRef} sx={boxSx}>
-      {cmdInputHistory.map((command) => (
-        <>
+      {cmdInputHistory.map(({ cmdInputHistory: command, key }) => (
+        <Fragment key={key}>
           <CmdInput command={command} readonly />
           {commandMapping[command] ?? <NotFound command={command} />}
-        </>
+        </Fragment>
       ))}
       <CmdInput
         inputValue={inputValue}

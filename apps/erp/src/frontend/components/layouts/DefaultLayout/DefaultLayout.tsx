@@ -23,16 +23,24 @@ const DefaultLayout: FC<Props> = ({ children }) => {
       height: "100vh",
       maxWidth: "64rem",
       margin: "0 auto",
-      minHeight: 0,
+      // minHeight: 0,
     }),
     [],
   );
-
+  const boxSx = useSX(
+    () => ({
+      minWidth: "30rem",
+      minHeight: "32rem",
+    }),
+    [],
+  );
   return (
     <Box component="main" sx={mainBoxSx}>
-      <Header />
-      {children}
-      <Footer />
+      <Box sx={boxSx}>
+        <Header />
+        {children}
+        <Footer />
+      </Box>
     </Box>
   );
 };

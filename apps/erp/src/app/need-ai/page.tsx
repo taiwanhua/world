@@ -9,7 +9,7 @@ export default function NeedAi(): JSX.Element {
   const typographySx = useSX(
     () => ({
       wordBreak: "break-all",
-      fontSize: "0.875rem",
+      fontSize: "0.4rem",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",

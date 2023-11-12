@@ -19,8 +19,7 @@ const Cmd: FC<PropsWithChildren<CmdProps>> = ({ sx }) => {
       {
         padding: 1,
         marginTop: 3,
-        height: "calc(70vh - 100px)",
-        overflow: "auto",
+        height: "calc(70vh - 6.25rem)",
         borderColor: (theme) => theme.palette.grey[500],
       },
       sx,

@@ -49,7 +49,7 @@ const ChatInputForwardRef = forwardRef<HTMLInputElement, ChatInputProps>(
       <Box>
         <TextField
           fullWidth
-          label="Multiline"
+          label="免付費諮詢"
           maxRows={4}
           minRows={4}
           multiline

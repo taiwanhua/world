@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react";
 import { memo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { type SX } from "@/frontend/hooks/theme/useSX";
-import { useRouter } from "@/frontend/hooks/router/useRouter";
 import { useCmdInputHistoryStore } from "@/frontend/hooks/zustand/useCmdInputHistoryStore";
 
 export interface NeedAiProps {
@@ -10,14 +10,12 @@ export interface NeedAiProps {
 
 const NeedAi: FC<PropsWithChildren<NeedAiProps>> = () => {
   const { clearCmdInputHistory } = useCmdInputHistoryStore();
-  const { mutate } = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     clearCmdInputHistory();
-    mutate({
-      pathnameForUpdate: "/need-ai",
-    });
-  }, [clearCmdInputHistory, mutate]);
+    router.push("/need-ai");
+  }, [clearCmdInputHistory, router]);
 
   return null;
 };

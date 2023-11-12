@@ -1,13 +1,15 @@
 import type { FC } from "react";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import Box from "@mui/material/Box";
-import type { SwitchProps } from "@mui/material/Switch";
+import type { IconButtonProps } from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-import { MuiDarkOrLightSwitch } from "ui";
 import Paper from "@mui/material/Paper";
-import { useSX, type SX } from "@/frontend/hooks/theme/useSX";
-import { useTheme } from "@/frontend/hooks/theme/useTheme";
+import IconButton from "@mui/material/IconButton";
+import Brightness5Icon from "@mui/icons-material/Brightness5";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
 import NextLinkButton from "@/frontend/components/links/NextLinkButton";
+import { useTheme } from "@/frontend/hooks/theme/useTheme";
+import { useSX, type SX } from "@/frontend/hooks/theme/useSX";
 
 export interface HeaderProps {
   className?: string;
@@ -17,12 +19,13 @@ export interface HeaderProps {
 const Header: FC<HeaderProps> = () => {
   const { paletteMode, paletteModeMutate } = useTheme();
 
-  const onSwitch = useCallback<NonNullable<SwitchProps["onChange"]>>(
-    (_event, checked): void => {
-      paletteModeMutate(checked ? "dark" : "light");
-    },
-    [paletteModeMutate],
-  );
+  const isDark = useMemo<boolean>(() => paletteMode === "dark", [paletteMode]);
+
+  const onClick = useCallback<
+    NonNullable<IconButtonProps["onClick"]>
+  >((): void => {
+    paletteModeMutate(isDark ? "light" : "dark");
+  }, [isDark, paletteModeMutate]);
 
   const boxSX = useSX(
     () => ({
@@ -49,10 +52,9 @@ const Header: FC<HeaderProps> = () => {
           <NextLinkButton href="/post" label="Post" />
           <NextLinkButton href="/need-ai" label="AI Secretary" />
 
-          <MuiDarkOrLightSwitch
-            checked={paletteMode === "dark"}
-            onChange={onSwitch}
-          />
+          <IconButton onClick={onClick}>
+            {isDark ? <Brightness4Icon /> : <Brightness5Icon />}
+          </IconButton>
         </Stack>
       </Paper>
     </Box>

@@ -12,8 +12,6 @@ export interface HeaderProps {
 const Header: FC<HeaderProps> = ({ sx }) => {
   const boxSX = useSX(
     () => ({
-      bottom: 0,
-      position: "absolute",
       padding: 1,
       fontWeight: "lighter",
       ...sx,
