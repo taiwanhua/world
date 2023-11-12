@@ -129,6 +129,9 @@ const ChatInputHistoryFC: FC<PropsWithChildren<ChatInputHistoryProps>> = ({
           display: "block",
           whiteSpace: "normal",
         },
+        "& .MuiChip-icon": {
+          marginRight: 1,
+        },
       },
     ],
     [],
@@ -137,22 +140,40 @@ const ChatInputHistoryFC: FC<PropsWithChildren<ChatInputHistoryProps>> = ({
   return (
     <>
       <Box ref={boxRef} sx={boxSx}>
-        {chatInputHistory.map(({ role, content }) => (
-          <Stack
-            direction="row"
-            justifyContent={role === "user" ? "flex-end" : "flex-start"}
-            key={`${role}-${content ?? ""}`}
-            paddingBottom={1}
-            paddingTop={1}
-          >
-            <Chip
-              color={role === "user" ? "primary" : "success"}
-              icon={role === "user" ? <FaceIcon /> : <Face3Icon />}
-              label={content}
-              sx={role === "user" ? userChipSx : aiChipSx}
-            />
-          </Stack>
-        ))}
+        <Stack
+          direction="row"
+          justifyContent="flex-start"
+          paddingBottom={1}
+          paddingTop={1}
+        >
+          <Chip
+            color="success"
+            icon={<Face3Icon />}
+            label="您好，我是秘書圓媛，可以問我有關於我老闆阿華的資訊"
+            sx={aiChipSx}
+          />
+        </Stack>
+
+        {chatInputHistory.map(({ role, content }) => {
+          const isUser = role === "user";
+
+          return (
+            <Stack
+              direction="row"
+              justifyContent={isUser ? "flex-end" : "flex-start"}
+              key={`${role}-${content ?? ""}`}
+              paddingBottom={1}
+              paddingTop={1}
+            >
+              <Chip
+                color={isUser ? "primary" : "success"}
+                icon={isUser ? <FaceIcon /> : <Face3Icon />}
+                label={content}
+                sx={isUser ? userChipSx : aiChipSx}
+              />
+            </Stack>
+          );
+        })}
       </Box>
       <Box sx={inputBoxSx}>
         <ChatInput
