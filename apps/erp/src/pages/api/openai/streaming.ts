@@ -12,7 +12,7 @@ const openai = new OpenAI({
 export default async function handler(
   request: NextRequest,
 ): Promise<StreamingTextResponse> {
-  const { prompt } = await request.json();
+  const { messages } = await request.json();
 
   const res = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
@@ -52,7 +52,7 @@ export default async function handler(
 
     `,
       },
-      ...prompt,
+      ...messages,
     ],
   });
 

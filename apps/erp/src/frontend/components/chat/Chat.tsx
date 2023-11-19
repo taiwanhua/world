@@ -3,7 +3,7 @@ import { memo, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import Collapse from "@mui/material/Collapse";
 import { useSX, type SX } from "@/frontend/hooks/theme/useSX";
-import ChatInputHistory from "@/frontend/components/chat/outputs/ChatInputHistory";
+import ChatInputHistory from "@/frontend/components/chat/ChatInputHistory";
 
 export interface ChatProps {
   sx?: SX;
