@@ -21,7 +21,7 @@ interface PostData {
   date: string;
 }
 
-const posts: PostData[] = [
+export const posts: PostData[] = [
   {
     name: "凡走過必留下痕跡 TypeScript 系列 第三回 : Narrowing 概念",
     url: "https://ithelp.ithome.com.tw/articles/10340558",
