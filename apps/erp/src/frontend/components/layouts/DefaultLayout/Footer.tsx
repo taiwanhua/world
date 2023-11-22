@@ -24,7 +24,13 @@ const Header: FC<HeaderProps> = ({ sx }) => {
   return (
     <Box component="footer" sx={boxSX}>
       Arhua Ho ©2023-present Created by
-      <IconButton color="secondary" href="#contained-buttons" sx={iconButtonSX}>
+      <IconButton
+        color="secondary"
+        href="https://github.com/taiwanhua/world"
+        rel="noopener noreferrer"
+        sx={iconButtonSX}
+        target="_blank"
+      >
         <GitHubIcon />
       </IconButton>
     </Box>

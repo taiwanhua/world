@@ -12,32 +12,9 @@ import Collapse from "@mui/material/Collapse";
 import { useEffect, useState } from "react";
 import ExternalLinkButton from "@/frontend/components/links/ExternalLinkButton";
 import { useSX } from "@/frontend/hooks/theme/useSX";
+import { posts } from "@/frontend/components/cmd/outputs/results/Post";
 
 const timeout = 2000;
-
-interface PostData {
-  name: string;
-  url: string;
-  date: string;
-}
-
-export const posts: PostData[] = [
-  {
-    name: "凡走過必留下痕跡 TypeScript 系列 第三回 : Narrowing 概念",
-    url: "https://ithelp.ithome.com.tw/articles/10340558",
-    date: "2023-11-03",
-  },
-  {
-    name: "凡走過必留下痕跡 TypeScript 系列 第二回 : 基本原始(The primitives)型態",
-    url: "https://ithelp.ithome.com.tw/articles/10340557",
-    date: "2023-11-02",
-  },
-  {
-    name: "凡走過必留下痕跡 TypeScript 系列 第一回 : 前言&初識TypeScript",
-    url: "https://ithelp.ithome.com.tw/articles/10220130",
-    date: "2023-11-01",
-  },
-];
 
 export default function Post(): JSX.Element {
   const [open, setOpen] = useState(false);

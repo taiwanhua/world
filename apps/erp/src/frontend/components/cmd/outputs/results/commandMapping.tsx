@@ -4,11 +4,12 @@ import Help from "@/frontend/components/cmd/outputs/results/Help";
 import Clear from "@/frontend/components/cmd/outputs/results/Clear";
 import NeedAi from "@/frontend/components/cmd/outputs/results/NeedAi";
 import Post from "@/frontend/components/cmd/outputs/results//Post";
+import About from "./About";
 
 export type MappingCommand = Exclude<Command, "not-found">;
 
 export const commandMapping: Record<MappingCommand, ReactNode> = {
-  about: "",
+  about: <About />,
   clear: <Clear />,
   help: <Help />,
   "need-ai": <NeedAi />,
