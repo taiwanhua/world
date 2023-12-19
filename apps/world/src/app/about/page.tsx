@@ -68,7 +68,7 @@ export default function About(): JSX.Element {
       <Divider />
       <Typography component="p" sx={typographySx}>
         <a
-          href={process.env.ONE_ZERO_FOUR_URL}
+          href={process.env.NEXT_PUBLIC_ONE_ZERO_FOUR_URL}
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -77,7 +77,7 @@ export default function About(): JSX.Element {
       </Typography>
       <Typography component="p" sx={typographySx}>
         <a
-          href={process.env.GITHUB_URL}
+          href={process.env.NEXT_PUBLIC_GITHUB_URL}
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -87,7 +87,7 @@ export default function About(): JSX.Element {
       <Divider />
       <Typography component="p" sx={typographySx}>
         <a
-          href={process.env.WS_GAME_URL}
+          href={process.env.NEXT_PUBLIC_WS_GAME_URL}
           rel="noopener noreferrer"
           target="_blank"
         >

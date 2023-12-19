@@ -10,9 +10,9 @@
     "GOOGLE_ID",
     "GOOGLE_SECRET",
     "OPENAI_API_KEY",
-    "ONE_ZERO_FOUR_URL",
-    "GITHUB_URL",
-    "WS_GAME_URL"
+    "NEXT_PUBLIC_ONE_ZERO_FOUR_URL",
+    "NEXT_PUBLIC_GITHUB_URL",
+    "NEXT_PUBLIC_WS_GAME_URL"
   ],
   "pipeline": {
     "build": {
