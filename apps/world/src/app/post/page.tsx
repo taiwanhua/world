@@ -23,7 +23,7 @@ export default function Post(): JSX.Element {
     setOpen(true);
   }, []);
 
-  const linkSX = useSX(() => ({ marginLeft: 0 }), []);
+  const linkSX = useSX(() => ({ marginLeft: 0, textAlign: "left" }), []);
   const tableContainerSX = useSX(() => ({ height: "70vh" }), []);
 
   return (
@@ -34,7 +34,7 @@ export default function Post(): JSX.Element {
             <TableHead>
               <TableRow>
                 <TableCell>貼文名稱</TableCell>
-                <TableCell>日期</TableCell>
+                <TableCell width={110}>日期</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

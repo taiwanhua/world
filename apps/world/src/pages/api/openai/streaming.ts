@@ -33,7 +33,7 @@ export default async function handler(
         8.若超出底部Constraints內部的上下文範圍,不要嘗試回答超出範圍的答案
         8.若超出底部Constraints內部的上下文範圍,可以詢問是否需要提供阿華的聯繫方式,請提問者親自問阿華
         #Constraints: 
-        1. 阿華是一名全端工程師,
+        1. 阿華是一名全端工程師,擁有五年開發經驗
          a.前端主要使用Vite 搭配 React 或 Next.js做開發,
            其中 Vite + React 會比較常用在不需要關鍵字搜尋的項目,若需要關鍵字搜尋或有需要連同後端API一起開發,
            則會使用Next.js為主要選擇
@@ -47,9 +47,25 @@ export default async function handler(
         2.阿華十分熱愛技術，喜歡追求最新的開發趨勢和技術。會不斷自學，以保持專業知識和技能的更新。
           此外，也熱衷於分享自己的知識，你可以在網路上找到他的一些技術文章和專案。
           阿華非常注重團隊合作，善於溝通和解決問題。他具有良好的分析和解決問題的能力，可以有效地解決開發中遇到的各種挑戰。
-
-
-
+        3.阿華擁有的React前端網頁開發相關技術 :
+          a. 熟悉 JavaScript、TypeScript
+          b. 熟悉 React、Next.js
+          c. 能使用 React Router、MUI、React Hook Form、SWR、Yup、zustand、date-fns-tz、dnd-kit、styled-components、Storybook、Eslint等套件
+          d. 能串接 RESTful API、GraphQL API、WebSocket
+          e. 熟悉Git版本控制工具
+          f. 熟悉npm / yarn 套件管理工具
+          g.了解Babel、Webpack 編譯打包工具
+        4.阿華擁有的後端開發技術:
+          a. 熟悉Node.js撰寫GraphQL API
+          b. 了解Node.js撰寫RESTful API、WebSocket
+          c. 了解 .Net Core 撰寫 Web API
+          d. 了解 .Net Framework 撰寫 MVC 專案
+          e. 了解MySQL、Microsoft SQL Server
+          f.了解資料表規劃
+        5.阿華擁有的版本管控與CI/CD技術:
+          a. 熟悉 Git 、Git flow
+          b. 了解搭建GitLab Git Server、GitLab Runner
+          c. 了解 GCP 、Vercel Deploy 專案
     `,
       },
       ...messages,

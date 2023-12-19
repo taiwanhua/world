@@ -9,7 +9,10 @@
     "NEXTAUTH_JWT_EXPIRE_TIME",
     "GOOGLE_ID",
     "GOOGLE_SECRET",
-    "OPENAI_API_KEY"
+    "OPENAI_API_KEY",
+    "ONE_ZERO_FOUR_URL",
+    "GITHUB_URL",
+    "WS_GAME_URL"
   ],
   "pipeline": {
     "build": {

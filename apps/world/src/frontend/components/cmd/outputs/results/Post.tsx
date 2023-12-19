@@ -17,6 +17,21 @@ interface PostData {
 
 export const posts: PostData[] = [
   {
+    name: "雜七雜八廣記系列 第十一回 : 詞法環境(Lexical environment)、 變數環境(variable environment)、閉包 closure",
+    url: "https://ithelp.ithome.com.tw/articles/10340943",
+    date: "2023-12-17",
+  },
+  {
+    name: "雜七雜八廣記系列 第十回 : var 、 let 、const",
+    url: "https://ithelp.ithome.com.tw/articles/10340930",
+    date: "2023-12-11",
+  },
+  {
+    name: "雜七雜八廣記系列 第九回 : Scope、Scope chain",
+    url: "https://ithelp.ithome.com.tw/articles/10340927",
+    date: "2023-12-01",
+  },
+  {
     name: "凡走過必留下痕跡 TypeScript 系列 第三回 : Narrowing 概念",
     url: "https://ithelp.ithome.com.tw/articles/10340558",
     date: "2023-11-03",
