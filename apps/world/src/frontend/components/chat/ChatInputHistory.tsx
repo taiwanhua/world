@@ -11,6 +11,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
 import SendIcon from "@mui/icons-material/Send";
 import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
 import { useSX, type SX } from "@/frontend/hooks/theme/useSX";
@@ -26,13 +27,20 @@ const ChatInputHistoryFC: FC<PropsWithChildren<ChatInputHistoryProps>> = ({
   const boxRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const { isLoading, messages, input, handleSubmit, handleInputChange, stop } =
-    useChat({
-      api: "/api/openai/streaming",
-      onFinish: () => {
-        inputRef.current?.focus();
-      },
-    });
+  const {
+    isLoading,
+    messages,
+    input,
+    handleSubmit,
+    handleInputChange,
+    stop,
+    error,
+  } = useChat({
+    api: "/api/openai/streaming",
+    onFinish: () => {
+      inputRef.current?.focus();
+    },
+  });
 
   useEffect(() => {
     if (messages.length === 0) {
@@ -134,6 +142,7 @@ const ChatInputHistoryFC: FC<PropsWithChildren<ChatInputHistoryProps>> = ({
           );
         })}
 
+        {error ? <Alert severity="error">{error.message}</Alert> : null}
         {isLoading ? <CircularProgress color="secondary" /> : null}
       </Box>
 

@@ -4,13 +4,14 @@ import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import MuiThemeProvider from "@/frontend/components/providers/MuiThemeProvider/MuiThemeProvider";
+import { resume } from "@/content/resume";
 import DefaultLayout from "@/frontend/components/layouts/DefaultLayout/DefaultLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Arhua's World",
-  description: "There is Arhua Ho's little world where all growth is recorded.",
+  title: `${resume.name} ${resume.englishName}｜${resume.title}｜Arhua's World`,
+  description: resume.summary,
 };
 
 interface RootLayoutProps {
@@ -19,7 +20,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
   return (
-    <html lang="en">
+    <html lang="zh-Hant">
       <MuiThemeProvider>
         <body className={inter.className}>
           <CssBaseline enableColorScheme />

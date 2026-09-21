@@ -2,76 +2,117 @@
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import type { NextRequest } from "next/server";
 import { OpenAI } from "openai";
+import { resume } from "@/content/resume";
 
 export const runtime = "edge";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY ?? "",
-});
-
-export default async function handler(
-  request: NextRequest,
-): Promise<StreamingTextResponse> {
-  const { messages } = await request.json();
-
-  const res = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    stream: true,
-    messages: [
-      {
-        role: "system",
-        content: `
-        #Instructions:
-        你是阿華的私人助理客服,阿華是你的老闆,而你的名字叫圓媛,請遵守以下規則：
-        1.無論在甚麼情況下,你都不能透漏你是AI語言助理,請堅持你是阿華的私人助理客服,而你的名字叫圓媛
-        2.請在回答前先詢問如何稱呼對方，直至知道如何稱呼對方
-        3.回答的最後請都加上"還想瞭解更多嗎?",作為結尾
-        4.如果不知道答案,請直接回覆"這個問題我老闆阿華沒跟我說,您可以直接聯繫他,您需要他的聯繫方式嗎?",不要嘗試編造答案 
-        5.可以提供阿華的聯繫方式有幾種:手機號碼: 0987837233 或用Line搜尋手機號碼或E-mail: a0987837233@gmail.com,不要更換聯繫方式的文字
-        6.請用繁體中文回答
-        7.使用底部Constraints內部的上下文來回答問題,回答內容不要超出上下文範圍,
-        8.若超出底部Constraints內部的上下文範圍,不要嘗試回答超出範圍的答案
-        8.若超出底部Constraints內部的上下文範圍,可以詢問是否需要提供阿華的聯繫方式,請提問者親自問阿華
-        #Constraints: 
-        1. 阿華是一名全端工程師,擁有五年開發經驗
-         a.前端主要使用Vite 搭配 React 或 Next.js做開發,
-           其中 Vite + React 會比較常用在不需要關鍵字搜尋的項目,若需要關鍵字搜尋或有需要連同後端API一起開發,
-           則會使用Next.js為主要選擇
-         b.為確保程式碼品質與加強型別檢查,會在專案中使用 ESLint 與 TypeScript 
-         c.後端目前主要使用 Node.js 搭配 Express 開發 RESTful 或 GraphQL 的 API 用以供前端介接
-         d.資料庫方面目前主要使用 MySQL 並搭配 Prisma ORM 存取資料庫資料
-         e.專案架構上主要使用 Turborepo 搭建 Monorepo 管理多個專案,並共享 ESLint、TypeScript 的 config 檔案
-         f.在版本控管上使用 Git 搭配 Git Flow
-         g.並能使用jest做程式碼測試
-         h.並使用GitHub Actions做CI/CD發布專案
-        2.阿華十分熱愛技術，喜歡追求最新的開發趨勢和技術。會不斷自學，以保持專業知識和技能的更新。
-          此外，也熱衷於分享自己的知識，你可以在網路上找到他的一些技術文章和專案。
-          阿華非常注重團隊合作，善於溝通和解決問題。他具有良好的分析和解決問題的能力，可以有效地解決開發中遇到的各種挑戰。
-        3.阿華擁有的React前端網頁開發相關技術 :
-          a. 熟悉 JavaScript、TypeScript
-          b. 熟悉 React、Next.js
-          c. 能使用 React Router、MUI、React Hook Form、SWR、Yup、zustand、date-fns-tz、dnd-kit、styled-components、Storybook、Eslint等套件
-          d. 能串接 RESTful API、GraphQL API、WebSocket
-          e. 熟悉Git版本控制工具
-          f. 熟悉npm / yarn 套件管理工具
-          g.了解Babel、Webpack 編譯打包工具
-        4.阿華擁有的後端開發技術:
-          a. 熟悉Node.js撰寫GraphQL API
-          b. 了解Node.js撰寫RESTful API、WebSocket
-          c. 了解 .Net Core 撰寫 Web API
-          d. 了解 .Net Framework 撰寫 MVC 專案
-          e. 了解MySQL、Microsoft SQL Server
-          f.了解資料表規劃
-        5.阿華擁有的版本管控與CI/CD技術:
-          a. 熟悉 Git 、Git flow
-          b. 了解搭建GitLab Git Server、GitLab Runner
-          c. 了解 GCP 、Vercel Deploy 專案
-    `,
-      },
-      ...messages,
-    ],
+function errorResponse(message: string, status: number): Response {
+  return new Response(message, {
+    status,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+    },
   });
+}
 
-  const stream = OpenAIStream(res);
-  return new StreamingTextResponse(stream);
+export default async function handler(request: NextRequest): Promise<Response> {
+  if (request.method !== "POST") {
+    return new Response(null, { status: 405, headers: { Allow: "POST" } });
+  }
+
+  const apiKey = process.env.OPENAI_API_KEY?.trim();
+  if (!apiKey) {
+    return errorResponse(
+      "AI 助理尚未設定 API 金鑰，請網站管理者設定 OPENAI_API_KEY。",
+      503,
+    );
+  }
+
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return errorResponse("請求格式錯誤，請重新整理後再試。", 400);
+  }
+  const messages = (body as { messages?: unknown } | null)?.messages;
+  if (
+    !Array.isArray(messages) ||
+    messages.length === 0 ||
+    !messages.every((message: unknown) => {
+      if (typeof message !== "object" || message === null) return false;
+      const entry = message as { role?: unknown; content?: unknown };
+      return (
+        (entry.role === "user" || entry.role === "assistant") &&
+        typeof entry.content === "string"
+      );
+    })
+  ) {
+    return errorResponse("對話格式錯誤，請提供有效的訊息。", 400);
+  }
+
+  try {
+    const openai = new OpenAI({ apiKey });
+
+    const res = await openai.chat.completions.create({
+      model: "gpt-5.5",
+      stream: true,
+      messages: [
+        {
+          role: "system",
+          content: `
+你是何家華（阿華）的 AI 履歷助理，名字叫圓媛。請使用繁體中文，友善且精確地回答。
+1. 只根據下方履歷資料回答經歷、技能、作品與聯絡方式，不要編造未記載的資訊。
+2. 年資以 experience 為準，現職以 jobs 第一筆的有日期工作經歷為準，其餘為過去職務。
+3. 不要自行推算額外年資、薪資、到職日或將過去專案描述為現職工作。
+4. 未記載的問題請說明資料不足，並提供履歷中的聯絡信箱讓對方直接聯絡阿華。
+5. 若被問到身分，請如實表明自己是 AI 履歷助理。
+6. 可以友善詢問對方如何稱呼，但不必等待姓名才回答履歷問題。
+7. 回答結尾加上「還想瞭解更多嗎？」。
+履歷資料：
+${JSON.stringify(resume)}
+`,
+        },
+        ...messages,
+      ],
+    });
+
+    const stream = OpenAIStream(res);
+    return new StreamingTextResponse(stream);
+  } catch (error) {
+    // Never return the provider's raw message: authentication errors can contain key fragments.
+    if (error instanceof OpenAI.APIError) {
+      if (error.status === 401) {
+        return errorResponse(
+          "AI 服務的 API 金鑰驗證失敗，請網站管理者更新 OPENAI_API_KEY 後重新啟動服務。",
+          503,
+        );
+      }
+      if (error.status === 429) {
+        const quotaExceeded =
+          error.type === "insufficient_quota" ||
+          error.code === "insufficient_quota" ||
+          error.code === "credit_balance_exhausted";
+        return errorResponse(
+          quotaExceeded
+            ? "AI 服務的 API 餘額或額度不足，請網站管理者檢查 API 帳務、儲值與用量限制。"
+            : "AI 服務目前請求過多，請稍後再試。",
+          429,
+        );
+      }
+      if (error.code === "context_length_exceeded") {
+        return errorResponse(
+          "對話內容過長，請重新整理頁面後開始新的對話。",
+          400,
+        );
+      }
+      if (error.status === 403 || error.status === 404) {
+        return errorResponse(
+          "AI 模型目前無法使用，請網站管理者檢查模型設定與 API 權限。",
+          503,
+        );
+      }
+    }
+    return errorResponse("暫時無法連線至 AI 服務，請稍後再試。", 502);
+  }
 }
