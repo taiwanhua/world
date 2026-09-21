@@ -6,6 +6,8 @@
 
 在 repository 根目錄執行：
 
+請使用 Node.js 24.x；根目錄與 app 的 `package.json` 已指定相同版本。
+
 ```powershell
 npm ci
 # 僅第一次建立設定檔時執行，避免覆寫既有 .env.local：
@@ -37,7 +39,7 @@ npm run dev --workspace=apps/world
 ## 部署到 Vercel
 
 1. 將 repository 推送到 GitHub，在 Vercel 選擇 Add New → Project 並匯入。
-2. Framework Preset 選擇 **Next.js**，Root Directory 設定為 **`apps/world`**。
+2. Framework Preset 選擇 **Next.js**，Root Directory 設定為 **`apps/world`**，Node.js Version 設定為 **`24.x`**。若看到 Node.js 18 已停用的錯誤，請到 Settings → Build and Deployment 更新版本後重新部署；repository 的 `engines.node` 也已指定 `24.x`。
 3. 開啟 **Include source files outside of the Root Directory in the Build Step**，讓建置能讀取 `packages/ui`、共用設定與根目錄 lockfile。
 4. Install Command 設為 `cd ../.. && npm ci`；Build Command 設為 `npm run build`；Output Directory 保留 Next.js 預設值。
 5. 在 Environment Variables 填入上表變數，依需要套用到 Production / Preview。Vercel 不會自動取得本機被 Git 忽略的 `.env`。
