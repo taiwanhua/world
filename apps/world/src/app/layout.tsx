@@ -7,7 +7,7 @@ import MuiThemeProvider from "@/frontend/components/providers/MuiThemeProvider/M
 import { resume } from "@/content/resume";
 import DefaultLayout from "@/frontend/components/layouts/DefaultLayout/DefaultLayout";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: `${resume.name} ${resume.englishName}｜${resume.title}｜Arhua's World`,
@@ -21,12 +21,12 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
   return (
     <html lang="zh-Hant">
-      <MuiThemeProvider>
-        <body className={inter.className}>
+      <body className={`${inter.className} ${inter.variable}`}>
+        <MuiThemeProvider>
           <CssBaseline enableColorScheme />
           <DefaultLayout>{children}</DefaultLayout>
-        </body>
-      </MuiThemeProvider>
+        </MuiThemeProvider>
+      </body>
     </html>
   );
 }

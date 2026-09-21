@@ -1,182 +1,169 @@
-import type { FC, PropsWithChildren } from "react";
-import { memo, useEffect, useRef } from "react";
-import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
-import FaceIcon from "@mui/icons-material/Face";
-import Face3Icon from "@mui/icons-material/Face3";
+"use client";
+
+import { useEffect, useRef } from "react";
+import type { FormEvent } from "react";
 import { useChat } from "ai/react";
-import TextField from "@mui/material/TextField";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import CircularProgress from "@mui/material/CircularProgress";
-import Alert from "@mui/material/Alert";
 import SendIcon from "@mui/icons-material/Send";
-import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
-import { useSX, type SX } from "@/frontend/hooks/theme/useSX";
+import StopIcon from "@mui/icons-material/Stop";
 
 const maxQuestionLength = 300;
-export interface ChatInputHistoryProps {
-  sx?: SX;
-}
+const suggestions = [
+  "介紹阿華的全端開發經驗",
+  "他如何將 AI 導入工程流程？",
+  "有哪些個人作品可以看看？",
+];
 
-const ChatInputHistoryFC: FC<PropsWithChildren<ChatInputHistoryProps>> = ({
-  sx,
-}) => {
-  const boxRef = useRef<HTMLDivElement | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
+export default function ChatInputHistory(): JSX.Element {
+  const outputRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const {
     isLoading,
     messages,
     input,
+    setInput,
     handleSubmit,
     handleInputChange,
     stop,
     error,
   } = useChat({
     api: "/api/openai/streaming",
-    onFinish: () => {
-      inputRef.current?.focus();
-    },
   });
 
   useEffect(() => {
-    if (messages.length === 0) {
-      return;
-    }
+    const output = outputRef.current;
+    if (output) output.scrollTop = output.scrollHeight;
+  }, [messages, error]);
 
-    boxRef.current?.scrollTo({
-      top: boxRef.current.scrollHeight,
-      behavior: "smooth",
-    });
-  }, [messages]);
-
-  const boxSx = useSX(
-    () => [
-      {
-        padding: 1,
-        height: "calc( 100% - 10rem)",
-        overflow: "auto",
-      },
-      sx,
-    ],
-    [sx],
-  );
-  const inputBoxSx = useSX(() => [{ height: "10rem", padding: 1 }], []);
-  const userChipSx = useSX(
-    () => [
-      {
-        height: "auto",
-        display: "block",
-        padding: 1,
-        width: "fit-content",
-        "& .MuiChip-label": {
-          display: "block",
-          whiteSpace: "normal",
-        },
-      },
-    ],
-    [],
-  );
-  const aiChipSx = useSX(
-    () => [
-      {
-        height: "auto",
-        display: "block",
-        padding: 1,
-        width: "fit-content",
-        "& .MuiChip-label": {
-          display: "block",
-          whiteSpace: "normal",
-        },
-        "& .MuiChip-icon": {
-          marginRight: 1,
-        },
-      },
-    ],
-    [],
-  );
-  const buttonGroupSx = useSX(
-    () => [{ width: "2.5rem", height: "8rem", justifyContent: "center" }],
-    [],
-  );
-  const inputSx = useSX(() => [{ width: "calc(100% - 2.5rem)" }], []);
+  function submit(event: FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    if (!input.trim() || input.length > maxQuestionLength || isLoading) return;
+    handleSubmit(event);
+  }
 
   return (
-    <>
-      <Box ref={boxRef} sx={boxSx}>
-        <Stack
-          direction="row"
-          justifyContent="flex-start"
-          paddingBottom={1}
-          paddingTop={1}
-        >
-          <Chip
-            color="success"
-            icon={<Face3Icon />}
-            label="您好，我是秘書圓媛，可以問我有關於我老闆阿華的資訊"
-            sx={aiChipSx}
+    <section aria-label="與 AI 助理圓媛對話" className="panel chat-window">
+      <div className="terminal-chrome">
+        <div aria-hidden="true" className="window-dots">
+          <i />
+          <i />
+          <i />
+        </div>
+        <span>YUANYUAN / AI LINK</span>
+        <span className="terminal-session">RESUME ASSISTANT</span>
+      </div>
+      <div
+        aria-label="對話紀錄"
+        className="chat-output"
+        ref={outputRef}
+        role="log"
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Scroll regions need keyboard focus.
+        tabIndex={0}
+      >
+        <div className="chat-message">
+          <span aria-hidden="true" className="chat-avatar">
+            ✳
+          </span>
+          <div className="chat-bubble">
+            <span>YUANYUAN · AI ASSISTANT</span>
+            <p>
+              你好，我是阿華的 AI 履歷助理圓媛。
+              <br />
+              你想了解他的工作經歷、技術能力，還是正在探索的作品？
+            </p>
+            {messages.length === 0 && (
+              <div className="chat-suggestions">
+                {suggestions.map((question) => (
+                  <button
+                    key={question}
+                    onClick={(): void => {
+                      setInput(question);
+                      inputRef.current?.focus();
+                    }}
+                    type="button"
+                  >
+                    {question} ↗
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+        {messages.map(({ id, role, content }) => (
+          <div
+            className={`chat-message ${role === "user" ? "user" : "assistant"}`}
+            key={id}
+          >
+            <span aria-hidden="true" className="chat-avatar">
+              {role === "user" ? "YOU" : "✳"}
+            </span>
+            <div className="chat-bubble">
+              <span>{role === "user" ? "YOU" : "YUANYUAN"}</span>
+              <p>{content}</p>
+            </div>
+          </div>
+        ))}
+        {Boolean(isLoading) && (
+          <p className="chat-waiting" role="status">
+            圓媛正在整理回覆
+            <span className="cursor-block" />
+          </p>
+        )}
+        {Boolean(error) && (
+          <div className="chat-alert" role="alert">
+            {error?.message}
+          </div>
+        )}
+      </div>
+      <form className="chat-form" onSubmit={submit}>
+        <div className="chat-input-line">
+          <textarea
+            aria-describedby="chat-input-help"
+            aria-invalid={input.length > maxQuestionLength}
+            aria-label="輸入想問圓媛的問題"
+            disabled={isLoading}
+            onChange={handleInputChange}
+            onKeyDown={(event): void => {
+              if (
+                event.key === "Enter" &&
+                !event.shiftKey &&
+                !event.nativeEvent.isComposing
+              ) {
+                event.preventDefault();
+                event.currentTarget.form?.requestSubmit();
+              }
+            }}
+            placeholder="輸入問題，開始一段對話…"
+            ref={inputRef}
+            rows={2}
+            value={input}
           />
-        </Stack>
-
-        {messages.map(({ id, role, content }) => {
-          const isUser = role === "user";
-
-          return (
-            <Stack
-              direction="row"
-              justifyContent={isUser ? "flex-end" : "flex-start"}
-              key={id}
-              paddingBottom={1}
-              paddingTop={1}
+          {isLoading ? (
+            <button
+              aria-label="停止回覆"
+              className="chat-send"
+              onClick={stop}
+              type="button"
             >
-              <Chip
-                color={isUser ? "primary" : "success"}
-                icon={isUser ? <FaceIcon /> : <Face3Icon />}
-                label={content}
-                sx={isUser ? userChipSx : aiChipSx}
-              />
-            </Stack>
-          );
-        })}
-
-        {error ? <Alert severity="error">{error.message}</Alert> : null}
-        {isLoading ? <CircularProgress color="secondary" /> : null}
-      </Box>
-
-      <Box component="form" onSubmit={handleSubmit} sx={inputBoxSx}>
-        <TextField
-          disabled={isLoading}
-          error={input.length > maxQuestionLength}
-          helperText={`每個問題最多 ${input.length} / ${maxQuestionLength}字`}
-          label="免付費諮詢"
-          maxRows={4}
-          minRows={4}
-          multiline
-          onChange={handleInputChange}
-          placeholder="請輸入問題，開始對話..."
-          ref={inputRef}
-          sx={inputSx}
-          value={input}
-          variant="outlined"
-        />
-        <ButtonGroup orientation="vertical" sx={buttonGroupSx}>
-          <Tooltip title="傳送">
-            <IconButton color="success" type="submit">
-              <SendIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="中斷">
-            <IconButton color="error" onClick={stop} type="button">
-              <DoNotDisturbAltIcon />
-            </IconButton>
-          </Tooltip>
-        </ButtonGroup>
-      </Box>
-    </>
+              <StopIcon fontSize="small" />
+            </button>
+          ) : (
+            <button
+              aria-label="傳送訊息"
+              className="chat-send"
+              disabled={!input.trim() || input.length > maxQuestionLength}
+              type="submit"
+            >
+              <SendIcon fontSize="small" />
+            </button>
+          )}
+        </div>
+        <div className="chat-form-footer" id="chat-input-help">
+          <span>Enter 傳送 · Shift + Enter 換行</span>
+          <span>
+            {input.length} / {maxQuestionLength} 字
+          </span>
+        </div>
+      </form>
+    </section>
   );
-};
-
-export default memo(ChatInputHistoryFC);
+}

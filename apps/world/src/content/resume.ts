@@ -165,22 +165,22 @@ export const resume = {
       url: "https://world.arhuaho.com/",
     },
     {
-      name: "WebSocket 益智連線小遊戲",
-      description: "基於 ws 的即時連線轉轉棋遊戲，可以殺殺時間的有趣小品遊戲。",
-      url:
-        process.env.NEXT_PUBLIC_WS_GAME_URL ||
-        "https://online-flexiq.arhuaho.com/",
+      name: "自製 React 介紹網站",
+      description: "分享一些網站開發知識的小站台。",
+      url: "https://taiwanhua.github.io/ArhuaReactCourse/docs/home/",
     },
     {
       name: "具有權限架構的通用後台系統",
       description:
         "包含資料表規劃、GraphQL API、與有使用者、角色權限架構的後台模板，可做為後台通用模板使用。",
-      url: "http://wowgo-for-demo.arhuaho.com/",
+      url: "https://erp-dev.cookhome.online/",
     },
     {
-      name: "自製 React 介紹網站",
-      description: "分享一些網站開發知識的小站台。",
-      url: "https://taiwanhua.github.io/ArhuaReactCourse/docs/home/",
+      name: "WebSocket 益智連線小遊戲",
+      description: "基於 ws 的即時連線轉轉棋遊戲，可以殺殺時間的有趣小品遊戲。",
+      url:
+        process.env.NEXT_PUBLIC_WS_GAME_URL ||
+        "https://online-flexiq.arhuaho.com/",
     },
   ],
   skills: [

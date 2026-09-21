@@ -37,11 +37,11 @@ export function useTheme(): Return {
     return createTheme(
       deepmerge(themeOptionsMapping[themeKey], {
         palette: {
-          mode: paletteMode, // use MUI paletteMode, or can use multiple custom palette
+          mode: "dark", // The deep-space console uses a consistent dark palette.
         },
       }),
     );
-  }, [themeKey, paletteMode]);
+  }, [themeKey]);
 
   return {
     theme,

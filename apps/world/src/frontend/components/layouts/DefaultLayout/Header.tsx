@@ -1,64 +1,49 @@
-import type { FC } from "react";
-import { memo, useCallback, useMemo } from "react";
-import Box from "@mui/material/Box";
-import type { IconButtonProps } from "@mui/material/IconButton";
-import Stack from "@mui/material/Stack";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import Brightness5Icon from "@mui/icons-material/Brightness5";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import NextLinkButton from "@/frontend/components/links/NextLinkButton";
-import { useTheme } from "@/frontend/hooks/theme/useTheme";
-import { useSX, type SX } from "@/frontend/hooks/theme/useSX";
+﻿"use client";
 
-export interface HeaderProps {
-  className?: string;
-  sx?: SX;
-}
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import { resume } from "@/content/resume";
 
-const Header: FC<HeaderProps> = () => {
-  const { paletteMode, paletteModeMutate } = useTheme();
+const navigation = [
+  { href: "/", number: "01", label: "控制台", english: "CONSOLE" },
+  { href: "/about", number: "02", label: "關於我", english: "PROFILE" },
+  { href: "/post", number: "03", label: "文章", english: "LOGBOOK" },
+  { href: "/need-ai", number: "04", label: "AI 助理", english: "AI LINK" },
+];
 
-  const isDark = useMemo<boolean>(() => paletteMode === "dark", [paletteMode]);
-
-  const onClick = useCallback<
-    NonNullable<IconButtonProps["onClick"]>
-  >((): void => {
-    paletteModeMutate(isDark ? "light" : "dark");
-  }, [isDark, paletteModeMutate]);
-
-  const boxSX = useSX(
-    () => ({
-      width: "100%",
-      minWidth: "fit-content",
-      justifyContent: "center",
-    }),
-    [],
-  );
-
+export default function Header(): JSX.Element {
+  const pathname = usePathname();
   return (
-    <Box sx={boxSX}>
-      <Paper elevation={12}>
-        <Stack
-          alignItems="center"
-          direction="row"
-          justifyContent="center"
-          padding={1}
-          spacing={{ xs: 1, sm: 2, md: 4 }}
-          width="100%"
-        >
-          <NextLinkButton href="/" label="Home" />
-          <NextLinkButton href="/about" label="About" />
-          <NextLinkButton href="/post" label="Post" />
-          <NextLinkButton href="/need-ai" label="AI Secretary" />
-
-          <IconButton onClick={onClick}>
-            {isDark ? <Brightness4Icon /> : <Brightness5Icon />}
-          </IconButton>
-        </Stack>
-      </Paper>
-    </Box>
+    <header className="site-header">
+      <Link aria-label="Arhua's World 首頁" className="brand" href="/">
+        <span aria-hidden="true" className="brand-mark">
+          a<span>h</span>
+          <i />
+        </span>
+        <span className="brand-copy">
+          ARHUA<span>PERSONAL SPACE</span>
+        </span>
+      </Link>
+      <nav aria-label="主要導覽" className="main-nav">
+        {navigation.map(({ href, number, label, english }) => (
+          <Link
+            aria-current={pathname === href ? "page" : undefined}
+            className={pathname === href ? "nav-item active" : "nav-item"}
+            href={href}
+            key={href}
+          >
+            <span className="nav-number">{number}</span>
+            <span>
+              {label}
+              <small>{english}</small>
+            </span>
+          </Link>
+        ))}
+      </nav>
+      <a className="header-contact" href={`mailto:${resume.contact.email}`}>
+        LET’S CONNECT <ArrowOutwardIcon fontSize="small" />
+      </a>
+    </header>
   );
-};
-
-export default memo(Header);
+}

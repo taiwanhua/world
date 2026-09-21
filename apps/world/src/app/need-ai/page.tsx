@@ -1,39 +1,44 @@
-"use client";
+﻿"use client";
 
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Chat from "@/frontend/components/chat/Chat";
-import { useSX } from "@/frontend/hooks/theme/useSX";
+import ChatInputHistory from "@/frontend/components/chat/ChatInputHistory";
 
 export default function NeedAi(): JSX.Element {
-  const typographySx = useSX(
-    () => ({
-      wordBreak: "break-all",
-      fontSize: "0.4rem",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      userSelect: "none",
-    }),
-    [],
-  );
-
   return (
-    <Box padding={3}>
-      <Typography color="#ef4440" component="div" sx={typographySx}>
-        <pre>
-          {`
-   _____  .___        _________                            __                       
-   /  _  \\ |   |      /   _____/ ____   ___________   _____/  |______ _______ ___.__.
-  /  /_\\  \\|   |      \\_____  \\_/ __ \\_/ ___\\_  __ \\_/ __ \\   __\\__  \\\\_  __ <   |  |
- /    |    \\   |      /        \\  ___/\\  \\___|  | \\/\\  ___/|  |  / __ \\|  | \\/\\___  |
- \\____|__  /___|     /_______  /\\___  >\\___  >__|    \\___  >__| (____  /__|   / ____|
-         \\/                  \\/     \\/     \\/            \\/          \\/       \\/     
-         `}
-        </pre>
-      </Typography>
-
-      <Chat />
-    </Box>
+    <div>
+      <div className="page-heading reveal">
+        <p className="eyebrow">04 / INTELLIGENCE LINK</p>
+        <h1>
+          與圓媛對話<span>YOUR GUIDE TO MY WORLD</span>
+        </h1>
+        <p>
+          想知道我的技術背景、工作經歷或專案細節？
+          <br />讓 AI 履歷助理圓媛，帶你認識我的世界。
+        </p>
+      </div>
+      <div className="ai-layout reveal delay-one">
+        <aside className="panel ai-info">
+          <div aria-hidden="true" className="ai-symbol">
+            ✳
+          </div>
+          <span className="eyebrow">AI RESUME ASSISTANT</span>
+          <h2>你好，我是圓媛。</h2>
+          <p>
+            我的任務，是根據阿華的完整履歷，回答你的問題，幫你找到想了解的經歷與作品。
+          </p>
+          <p>你可以用自然的方式提問，就像和一位熟悉他的同事聊天。</p>
+          <dl>
+            <dt>資料來源</dt>
+            <dd>完整履歷</dd>
+            <dt>對話語言</dt>
+            <dd>繁體中文</dd>
+            <dt>聯絡本人</dt>
+            <dd>
+              <a href="mailto:a0987837233@gmail.com">電子郵件 ↗</a>
+            </dd>
+          </dl>
+        </aside>
+        <ChatInputHistory />
+      </div>
+    </div>
   );
 }

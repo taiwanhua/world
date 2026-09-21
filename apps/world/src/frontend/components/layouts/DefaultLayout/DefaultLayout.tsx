@@ -1,48 +1,39 @@
-"use client";
+﻿"use client";
 
-import type { FC, PropsWithChildren } from "react";
-import { memo } from "react";
-import Box from "@mui/material/Box";
-import type { SX } from "@/frontend/hooks/theme/useSX";
-import { useSX } from "@/frontend/hooks/theme/useSX";
+import { useEffect, useState } from "react";
+import type { PropsWithChildren } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
-export type Props = PropsWithChildren<{
-  className?: string;
-  sx?: SX;
-  pageTitle?: string;
-}>;
+export default function DefaultLayout({
+  children,
+}: PropsWithChildren): JSX.Element {
+  const [motionPaused, setMotionPaused] = useState(false);
+  useEffect(() => {
+    setMotionPaused(localStorage.getItem("world-motion") === "paused");
+  }, []);
 
-const DefaultLayout: FC<Props> = ({ children }) => {
-  const mainBoxSx = useSX(
-    () => ({
-      flexGrow: 1,
-      padding: 3,
-      overflow: "auto",
-      height: "100vh",
-      maxWidth: "64rem",
-      margin: "0 auto",
-      // minHeight: 0,
-    }),
-    [],
-  );
-  const boxSx = useSX(
-    () => ({
-      minWidth: "30rem",
-      minHeight: "32rem",
-    }),
-    [],
-  );
+  function toggleMotion(): void {
+    setMotionPaused((previous) => {
+      localStorage.setItem("world-motion", previous ? "playing" : "paused");
+      return !previous;
+    });
+  }
+
   return (
-    <Box component="main" sx={mainBoxSx}>
-      <Box sx={boxSx}>
-        <Header />
+    <div
+      className="world-shell"
+      data-motion={motionPaused ? "paused" : "playing"}
+    >
+      <div aria-hidden="true" className="space-backdrop" />
+      <a className="skip-link" href="#main-content">
+        跳至主要內容
+      </a>
+      <Header />
+      <main className="site-main" id="main-content">
         {children}
-        <Footer />
-      </Box>
-    </Box>
+      </main>
+      <Footer motionPaused={motionPaused} onToggleMotion={toggleMotion} />
+    </div>
   );
-};
-
-export default memo(DefaultLayout);
+}

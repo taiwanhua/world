@@ -22,7 +22,7 @@ const appendKey = (
 ): CmdInputHistoryWithKey[] => {
   return cmdInputHistory.map<CmdInputHistoryWithKey>((cmdInput) => ({
     cmdInputHistory: cmdInput,
-    key: `${Date.now()}`,
+    key: crypto.randomUUID(),
   }));
 };
 
@@ -35,7 +35,7 @@ interface Store {
 }
 
 export const useCmdInputHistoryStore = create<Store>((set, get) => ({
-  cmdInputHistory: [],
+  cmdInputHistory: [{ cmdInputHistory: "about", key: "initial-about" }],
   setCmdInputHistory: (cmdInputHistory): void =>
     set(() => {
       const nextCmdInputHistory = appendKey(cmdInputHistory);

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -47,6 +47,7 @@ export default function ResumeContent({
 
   return (
     <Box
+      className={compact ? "" : "resume-content"}
       sx={{
         overflowWrap: "anywhere",
         "& > * + *": { marginTop: 3 },
@@ -55,7 +56,7 @@ export default function ResumeContent({
         "& a": { textDecoration: "underline", textUnderlineOffset: "0.2em" },
       }}
     >
-      <Typography component={compact ? "h2" : "h1"} variant="h5">
+      <Typography component="h2" variant="h5">
         {resume.name}（{resume.englishName}）｜{resume.title}
       </Typography>
       <Typography>{resume.summary}</Typography>

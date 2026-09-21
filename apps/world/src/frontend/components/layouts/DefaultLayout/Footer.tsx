@@ -1,40 +1,33 @@
-import type { FC } from "react";
-import { memo } from "react";
-import IconButton from "@mui/material/IconButton";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import Box from "@mui/material/Box";
-import { useSX, type SX } from "@/frontend/hooks/theme/useSX";
+﻿import { resume } from "@/content/resume";
 
-export interface HeaderProps {
-  sx?: SX;
+interface FooterProps {
+  motionPaused: boolean;
+  onToggleMotion: () => void;
 }
 
-const Header: FC<HeaderProps> = ({ sx }) => {
-  const boxSX = useSX(
-    () => ({
-      padding: 1,
-      fontWeight: "lighter",
-      ...sx,
-    }),
-    [sx],
-  );
-
-  const iconButtonSX = useSX(() => ({ margin: 0 }), []);
-
+export default function Footer({
+  motionPaused,
+  onToggleMotion,
+}: FooterProps): JSX.Element {
   return (
-    <Box component="footer" sx={boxSX}>
-      Arhua Ho ©2023-present Created by
-      <IconButton
-        color="secondary"
-        href="https://github.com/taiwanhua/world"
-        rel="noopener noreferrer"
-        sx={iconButtonSX}
-        target="_blank"
-      >
-        <GitHubIcon />
-      </IconButton>
-    </Box>
+    <footer className="site-footer">
+      <span>
+        © {new Date().getFullYear()} ARHUA HO{" "}
+        <span className="footer-divider">/</span> BUILT WITH CURIOSITY.
+      </span>
+      <div>
+        <button
+          aria-pressed={motionPaused}
+          onClick={onToggleMotion}
+          type="button"
+        >
+          動畫：{motionPaused ? "已暫停" : "開啟中"}
+        </button>
+        <a href={resume.links.github} rel="noopener noreferrer" target="_blank">
+          GITHUB ↗
+        </a>
+        <span className="location-dot">TAIWAN · UTC+8</span>
+      </div>
+    </footer>
   );
-};
-
-export default memo(Header);
+}
